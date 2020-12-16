@@ -1,0 +1,5 @@
+---
+
+- import_playbook: common.yml
+- import_playbook: hypervisor.yml
+- import_playbook: cloudstack.yml              
