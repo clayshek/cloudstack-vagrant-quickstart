@@ -1,0 +1,47 @@
+---
+
+  - name: 'Common Config'
+    hosts: all
+    
+    tasks:
+      - name: 'Upgrade All Packages'
+        yum:
+          name: '*'
+          state: latest
+
+      - name: Ensure SELinux is set to permissive mode, per CloudStack install doc
+        lineinfile:
+          path: /etc/selinux/config
+          regexp: '^SELINUX='
+          line: SELINUX=permissive
+
+      - name: Set SELinux to permissive immediately without reboot
+        command: setenforce permissive
+
+      - name: 'Install NTP'
+        yum:
+          name: ntp
+          state: present          
+
+      - name: 'Install Avahi'
+        yum:
+          name: avahi
+          state: present
+
+      - name: 'Start Avahi service, if not started'
+        service:
+          name: avahi-daemon
+          state: started 
+
+#      - name: 'Install Bridge Utils'
+#        yum:
+#          name: 
+#            - bridge-Utils
+#          state: present          
+
+      - name: Add CloudStack Repository
+        yum_repository:
+          name: cloudstack
+          description: CloudStack repo
+          baseurl: http://download.cloudstack.org/centos/7/4.14/
+          gpgcheck: no

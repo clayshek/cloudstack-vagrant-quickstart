@@ -1,0 +1,22 @@
+---
+
+    - name: 'CloudStack Management Server Config'
+      hosts: cloudstack
+    
+      tasks:
+        - name: Install MySql RPM from repo
+          yum:
+            name: https://repo.mysql.com/mysql80-community-release-el7-3.noarch.rpm
+            state: present
+
+        - name: 'Install CloudStack Management Server'
+          yum:
+            name: cloudstack-management
+            state: present
+
+        - name: 'Install MySql Database Server'
+          yum:
+            name: 
+              - mysql-server
+              #- mysql-connector-python
+            state: present            

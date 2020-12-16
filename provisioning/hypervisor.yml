@@ -1,0 +1,48 @@
+---
+
+    - name: 'Hypervisor Config'
+      hosts: hypervisors
+    
+      tasks:
+        - name: 'Install CloudStack Agent'
+          yum:
+            name: 
+              - epel-release 
+              - cloudstack-agent
+            state: present 
+
+        - name: 'Install KVM & Related Packages'
+          yum:
+            name: 
+              - qemu-kvm 
+              - qemu-img 
+              #- virt-manager 
+              - libvirt 
+              - libvirt-python 
+              - libvirt-client 
+              - virt-install 
+              - virt-viewer 
+              - bridge-utils
+            state: present 
+
+        - name: 'Start & Enable libvirtd'
+          service:
+            name: libvirtd
+            state: started
+            enabled: yes            
+
+        - name: Add libvirtd config template 
+          template: 
+            src: templates/libvirtd.conf.j2 
+            dest: /etc/libvirt/libvirtd.conf
+
+        - name: Add libvirtd sysconfig template
+          template: 
+            src: templates/libvirtd.sysconfig.j2 
+            dest: /etc/sysconfig/libvirtd
+
+        - name: 'Restart libvirtd with new config'
+          service:
+            name: libvirtd
+            state: restarted
+             
