@@ -4,9 +4,12 @@ Vagrant provisioning of a CloudStack managed KVM virtualization playground, on t
 
 Still very much a work in progress, and currently only partially funcational.
 
-Vagrantfile will provision 3 machines by default:
-- csmgmt: CloudStack management server and MySql DB. CentOS 7.
-- kvm1 & kvm2: QEMU/KVM Hypervisors with CloudStack agent installed. CentOS 7
+Vagrantfile will provision 3 machines by default, all running CentOS 7:
+- csmgmt: CloudStack management server and MySql DB.
+- kvm1 & kvm2: QEMU/KVM Hypervisors with CloudStack agent installed. 
+
+Notes:
+- Primary goal here is a quick start temporary demo environment. Some items of importance such as security were not priority. So for example, the MySQL installation is not secured per best practice, and the CloudStack database is created without security in mind, for sake of simplicity. 
 
 ## Requirements:
 

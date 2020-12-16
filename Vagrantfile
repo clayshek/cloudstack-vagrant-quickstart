@@ -3,12 +3,17 @@
 
 VAGRANTFILE_API_VERSION = "2"
 
+CENTOS7_VAGRANT_VERSION = "2004.1"
+# https://app.vagrantup.com/centos/boxes/7
+
+
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # CloudStack Management Server VM
   config.vm.define "csmgmt", primary: true do |csmgmt|
     csmgmt.vm.box = "centos/7"
-    csmgmt.vm.host_name = "csmgmt"
+    csmgmt.vm.box_version = CENTOS7_VAGRANT_VERSION
+    csmgmt.vm.host_name = "csmgmt.local"
     csmgmt.vm.provider "hyperv" do |hyperv|
         hyperv.memory = "4096"
         hyperv.vmname = "csmgmt"
@@ -19,6 +24,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   (1..2).each do |i|
     config.vm.define "kvm#{i}" do |kvm|
       kvm.vm.box = "centos/7"
+      kvm.vm.box_version = CENTOS7_VAGRANT_VERSION
       kvm.vm.host_name = "kvm#{i}.local"
       #kvm.vm.network "private_network", ip: "192.168.1.9#{i}", hostname: true
       kvm.vm.provider "hyperv" do |hyperv|

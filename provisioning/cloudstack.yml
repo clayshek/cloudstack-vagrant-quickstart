@@ -4,19 +4,42 @@
       hosts: cloudstack
     
       tasks:
-        - name: Install MySql RPM from repo
+        - name: 'Install MySql RPM from repo'
           yum:
-            name: https://repo.mysql.com/mysql80-community-release-el7-3.noarch.rpm
+            name: http://repo.mysql.com/mysql57-community-release-el7-8.noarch.rpm
             state: present
+
+        - name: 'Install MySql Database Server'
+          yum:
+            name: mysql-server
+            state: present  
+
+        - name: 'Install mysql-connector-python package with --nodeps'
+          command: rpm -Uvh https://dev.mysql.com/get/Downloads/Connector-Python/mysql-connector-python-8.0.22-1.el7.x86_64.rpm --nodeps
+            #warn: no
+          # --nodeps to address this dependency bug: https://bugs.mysql.com/bug.php?id=101464    
+
+        - name: 'Add MySQL config template' 
+          template: 
+            src: templates/my.cnf.j2 
+            dest: /etc/my.cnf              
+
+        - name: Initialize MySQL
+          command: mysqld --initialize-insecure --user=mysql
+
+        - name: 'Start & Enable MySQL'
+          service:
+            name: mysqld
+            state: started
+            enabled: yes 
 
         - name: 'Install CloudStack Management Server'
           yum:
             name: cloudstack-management
             state: present
 
-        - name: 'Install MySql Database Server'
-          yum:
-            name: 
-              - mysql-server
-              #- mysql-connector-python
-            state: present            
+        - name: Setup CloudStack Database
+          command: cloudstack-setup-databases cloud:password@localhost --deploy-as=root -i 127.0.0.1          
+
+        - name: Setup CloudStack Management Server
+          command: cloudstack-setup-management           
