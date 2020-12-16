@@ -1,4 +1,4 @@
-CloudStack (Nested in Hyper-V) Vagrant Quickstart
+# CloudStack (Nested in Hyper-V) Vagrant Quickstart
 
 Vagrant provisioning of a CloudStack managed KVM virtualization playground, on top of Windows (Hyper-V). For demo purposes.
 
@@ -14,6 +14,14 @@ Vagrantfile will provision 3 machines by default:
 - [Vagrant installed](https://www.vagrantup.com/downloads)
 
 ## Usage:
+
+Clone this repo. From within the repo directory, run: `vagrant up`. The only prompt should be asking which Hyper-V virtual switch to use. The Vagrant Hyper-V provider [can't figure this out yet](https://www.vagrantup.com/docs/providers/hyperv/limitations).
+
+## Cleanup:
+
+Destroy all VMs:  `vagrant destroy --force`  
+
+Destroy specific VMs: `vagrant destroy vmname`
 
 ## Reference Docs:
 
